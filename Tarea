@@ -1,0 +1,147 @@
+import Foundation
+
+// let se utiliza para indicar constantes
+// var se utiliza para indicar variables
+
+let edad_1: Int = 50
+let edad_2 = 505.4
+print("El tipo de edad_2 es \(type(of: edad_2))")
+
+var edad: Int? = 10
+
+var mayoria_de_edad: Int = 18
+
+var nombre: String? = nil
+
+print("El tipo de dato de mayoria_de_edad es \(type(of: mayoria_de_edad))")
+
+var saludar_a: String = "Buenos días \(nombre ?? "Fulanito")"
+
+print(saludar_a)
+
+
+/*
+if let edadDesempaquetada = edad {
+    if edadDesempaquetada >= mayoria_de_edad {
+        print("Sí es mayor de edad")
+    } else {
+        print("No es mayor de edad")
+    }
+} else {
+    print("Edad no disponible")
+}
+*/
+
+/*
+
+En Swift, las declaraciones explícitas e implícitas se refieren a cómo se especifican los tipos de datos. Las declaraciones explícitas indican el tipo de dato de una variable o constante de forma clara y directa, mientras que las declaraciones implícitas permiten al compilador inferir el tipo basándose en el valor asignado. 
+Declaraciones Explícitas:
+
+    En Swift, se utiliza el operador : seguido del tipo de dato para especificarlo explícitamente.
+    Ejemplo: let nombre: String = "Juan" (se especifica que la variable nombre es de tipo String). 
+
+Declaraciones Implícitas (Inferencia de Tipos):
+
+    Swift puede inferir el tipo de dato si no se especifica explícitamente, basándose en el valor inicial.
+    Ejemplo: let edad = 30 (Swift infiere que edad es de tipo Int).
+    Swift puede inferir el tipo de dato si no se especifica explícitamente, basándose en el valor inicial.
+    Ejemplo: let nombre = "Juan" (Swift infiere que nombre es de tipo String). 
+
+Ventajas de las Declaraciones Implícitas (Inferencia de Tipos):
+
+    Código más conciso:
+    Facilita la escritura de código al reducir la necesidad de especificar tipos constantemente.
+    Legibilidad:
+    El código puede ser más fácil de leer cuando el tipo es evidente por el contexto.
+    Productividad:
+    Puede acelerar el desarrollo al reducir la cantidad de código que se debe escribir.
+
+Ventajas de las Declaraciones Explícitas:
+
+    Claridad:
+    En situaciones complejas o donde el tipo no es obvio, la declaración explícita puede mejorar la comprensión del código.
+    Evitar errores:
+    En algunos casos, puede ayudar a prevenir errores relacionados con tipos incorrectos.
+    Mantenibilidad:
+    Facilita el mantenimiento del código al dejar claro el tipo de dato utilizado. 
+
+Cuando usar cada tipo de declaración:
+
+    Declaraciones explícitas:
+    Se recomienda cuando el tipo de dato no es claro, en código complejo, o cuando se quiere asegurar la claridad y evitar errores.
+    Declaraciones implícitas:
+    Se recomienda cuando el tipo de dato es evidente y se busca concisión y productividad en el código. 
+
+Ejemplos Adicionales:
+
+    let PI: Double = 3.14159 (Declaración explícita de tipo Double).
+    let message = "Hola, mundo!" (Declaración implícita de tipo String).
+    let count: Int? = nil (Declaración explícita de un opcional de tipo Int).
+    let value = someFunction() (Inferencia del tipo de retorno de someFunction()). 
+
+En resumen, Swift ofrece la flexibilidad de usar declaraciones explícitas e implícitas, lo que permite a los desarrolladores elegir la opción que mejor se adapte a sus necesidades y a la situación específica del código.
+*/
+
+// Ejemplos de constantes explícitas con tipos claros
+
+let pi: Double = 3.1416                        
+let nombreConstante: String = "Mike"          
+let añoNacimiento: Int = 2000                  
+let esMayorEdad: Bool = true                   
+let inicial: String = "M"                       
+
+// Ejemplos  implícitas 
+    
+let pais = "México"                               
+let temperatura = 25.5   
+let ciudad = "Ciudad Juárez"                           
+let activo = false                                 
+let diasSemana = 7                                
+
+// Ejemplos  explícitas 
+
+var edadVariable: Int = 25                        
+var precio: Double = 199.99                        
+var mensaje: String = "Hola mundo"                 
+var altura: Float = 1.75                            
+var cantidad: Int = 42                             
+
+// Ejemplos  variables implícitas 
+
+var color = "Rojo"                                
+var peso = 70.2                                   
+var conectado = true                               
+var letra = "A"                                   
+var velocidad = 120                                
+
+
+
+print("\n Constantes explícitas")
+print("pi: \(pi), tipo: \(type(of: pi))")
+print("nombreConstante: \(nombreConstante), tipo: \(type(of: nombreConstante))")
+print("añoNacimiento: \(añoNacimiento), tipo: \(type(of: añoNacimiento))")
+print("esMayorEdad: \(esMayorEdad), tipo: \(type(of: esMayorEdad))")
+print("inicial: \(inicial), tipo: \(type(of: inicial))")
+
+print("\n Constantes implícitas ")
+print("ciudad: \(ciudad), tipo: \(type(of: ciudad))")
+print("pais: \(pais), tipo: \(type(of: pais))")
+print("temperatura: \(temperatura), tipo: \(type(of: temperatura))")
+print("activo: \(activo), tipo: \(type(of: activo))")
+print("diasSemana: \(diasSemana), tipo: \(type(of: diasSemana))")
+
+print("\n Variables explícitas ")
+print("edadVariable: \(edadVariable), tipo: \(type(of: edadVariable))")
+print("precio: \(precio), tipo: \(type(of: precio))")
+print("mensaje: \(mensaje), tipo: \(type(of: mensaje))")
+print("altura: \(altura), tipo: \(type(of: altura))")
+print("cantidad: \(cantidad), tipo: \(type(of: cantidad))")
+
+print("\n Variables implícitas ")
+print("color: \(color), tipo: \(type(of: color))")
+print("peso: \(peso), tipo: \(type(of: peso))")
+print("conectado: \(conectado), tipo: \(type(of: conectado))")
+print("letra: \(letra), tipo: \(type(of: letra))")
+print("velocidad: \(velocidad), tipo: \(type(of: velocidad))")
+
+
