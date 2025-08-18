@@ -1,0 +1,49 @@
+var lista = 0...100
+for numero in lista{
+    print(numero)
+}
+
+var numero_pc = Int.random(in: 0...100)
+print("Numero aleatorio generado (numero oculto)")
+
+func validar_entrada_a_numero() -> Int{
+    var entrada_del_usuario: String? = nil
+    var numero_valido: Int? = nil
+    
+    while true{
+        print("porfavor introduce un numero")
+        entrada_del_usuario = readLine()
+        
+        if entrada_del_usuario == nil {
+            print("que pasa mi hackers andas muy tivio mijo")
+            continue
+        }
+        numero_valido = Int(entrada_del_usuario!)
+        
+        if numero_valido == nil {
+            print("lo introdujiste no fue un numero, por favor usa numeros y no letras")
+        }
+        else if !(0...100).contains(numero_valido!) {
+            print("el numero debe estar entre 0 y 100")
+        }
+        else{
+            return numero_valido!
+        }
+    }
+}
+
+var respuesta_del_usuario = 0
+
+while respuesta_del_usuario != numero_pc {
+    respuesta_del_usuario = validar_entrada_a_numero()
+    
+    if respuesta_del_usuario == numero_pc {
+        print("acertaste el numero es correcto")
+    }
+    else if respuesta_del_usuario < numero_pc {
+        print("tu numero es muy bajo")
+    }
+    else {
+        print("tu numero es muy alto")
+    }
+}
