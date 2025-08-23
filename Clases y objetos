@@ -1,0 +1,99 @@
+
+
+class Entrenador {
+    var nombre: String
+    var medallas: Int
+    
+    init(nombre: String, medallas: Int) {
+        self.nombre = nombre
+        self.medallas = medallas
+    }
+    
+    func presentar() {
+        print("Soy el entrenador \(nombre) y tengo \(medallas) medallas.")
+    }
+}
+
+class Pokemon {
+    var nombre: String
+    var nivel: Int
+    var vida: Int
+    
+    init(nombre: String, nivel: Int, vida: Int) {
+        self.nombre = nombre
+        self.nivel = nivel
+        self.vida = vida
+    }
+    
+    func atacar() {
+        if nivel < 10 {
+            print("\(nombre) usa Placaje")
+        } else if nivel < 20 {
+            print("\(nombre) usa Impactrueno")
+        } else {
+            print("\(nombre) usa Rayo")
+        }
+    }
+    
+    func recibirDanio(danio: Int) {
+        vida -= danio
+        if vida <= 0 {
+            print("\(nombre) se debilitó")
+        } else {
+            print("\(nombre) tiene ahora \(vida) puntos de vida.")
+        }
+    }
+}
+
+class CentroPokemon {
+    func curar(pokemon: Pokemon) {
+        pokemon.vida = 100
+        print("El Pokémon \(pokemon.nombre) fue curado en el Centro Pokémon")
+    }
+}
+
+class Gimnasio {
+    var lider: String
+    
+    init(lider: String) {
+        self.lider = lider
+    }
+    
+    func retar() {
+        print("Te enfrentas al líder de gimnasio \(lider)")
+    }
+}
+
+class Combate {
+    func pelear(pokemon1: Pokemon, pokemon2: Pokemon) {
+        print("Comienza el combate entre \(pokemon1.nombre) y \(pokemon2.nombre)")
+        
+        if pokemon1.nivel > pokemon2.nivel {
+            print("\(pokemon1.nombre) gana el combate")
+        } else if pokemon1.nivel < pokemon2.nivel {
+            print("\(pokemon2.nombre) gana el combate")
+        } else {
+            print("El combate terminó en empate")
+        }
+    }
+}
+
+// --- Ejemplo de uso ---
+
+let entrenador = Entrenador(nombre: "Ash", medallas: 5)
+entrenador.presentar()
+
+let pikachu = Pokemon(nombre: "Pikachu", nivel: 15, vida: 80)
+let bulbasaur = Pokemon(nombre: "Bulbasaur", nivel: 12, vida: 70)
+
+pikachu.atacar()
+bulbasaur.recibirDanio(danio: 30)
+
+let centro = CentroPokemon()
+centro.curar(pokemon: bulbasaur)
+
+let gimnasio = Gimnasio(lider: "Misty")
+gimnasio.retar()
+
+let combate = Combate()
+combate.pelear(pokemon1: pikachu, pokemon2: bulbasaur)
