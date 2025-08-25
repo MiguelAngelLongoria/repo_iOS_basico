@@ -1,0 +1,58 @@
+import Foundation
+
+// Ejemplos de constantes explícitas con tipos claros
+let pi: Double = 3.1416                  // Double
+let nombreConstante: String = "Mike"     // String
+let añoNacimiento: Int = 2000            // Int
+let esMayorEdad: Bool = true             // Bool
+let inicial: Character = "M"             // Character (distinto a String)
+
+// Ejemplos de constantes implícitas
+let pais = "México"                      // String
+let temperatura = 25.5                   // Double
+let conectadoWifi = true                 // Bool
+let diasSemana = 7                       // Int
+let letraUnicode = "🔥"                  // String especial
+
+// Ejemplos de variables explícitas
+var altura: Float = 1.75                 // Float
+var precio: Double = 199.99              // Double
+var edadVariable: UInt8 = 25             // Entero sin signo
+var saldo: Decimal = 1500.75             // Decimal (más preciso en dinero)
+var mensaje: String = "Hola mundo"       // String
+
+// Ejemplos de variables implícitas
+var color = "Rojo"                       // String
+var peso = 70.2                          // Double
+var conectado = false                    // Bool
+var velocidad = 120                      // Int
+var simbolo = Character("A")             // Character
+
+// Impresiones
+print("\nConstantes explícitas")
+print("pi: \(pi), tipo: \(type(of: pi))")
+print("nombreConstante: \(nombreConstante), tipo: \(type(of: nombreConstante))")
+print("añoNacimiento: \(añoNacimiento), tipo: \(type(of: añoNacimiento))")
+print("esMayorEdad: \(esMayorEdad), tipo: \(type(of: esMayorEdad))")
+print("inicial: \(inicial), tipo: \(type(of: inicial))")
+
+print("\nConstantes implícitas")
+print("pais: \(pais), tipo: \(type(of: pais))")
+print("temperatura: \(temperatura), tipo: \(type(of: temperatura))")
+print("conectadoWifi: \(conectadoWifi), tipo: \(type(of: conectadoWifi))")
+print("diasSemana: \(diasSemana), tipo: \(type(of: diasSemana))")
+print("letraUnicode: \(letraUnicode), tipo: \(type(of: letraUnicode))")
+
+print("\nVariables explícitas")
+print("altura: \(altura), tipo: \(type(of: altura))")
+print("precio: \(precio), tipo: \(type(of: precio))")
+print("edadVariable: \(edadVariable), tipo: \(type(of: edadVariable))")
+print("saldo: \(saldo), tipo: \(type(of: saldo))")
+print("mensaje: \(mensaje), tipo: \(type(of: mensaje))")
+
+print("\nVariables implícitas")
+print("color: \(color), tipo: \(type(of: color))")
+print("peso: \(peso), tipo: \(type(of: peso))")
+print("conectado: \(conectado), tipo: \(type(of: conectado))")
+print("velocidad: \(velocidad), tipo: \(type(of: velocidad))")
+print("simbolo: \(simbolo), tipo: \(type(of: simbolo))")
