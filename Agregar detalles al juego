@@ -1,4 +1,15 @@
-enum RolesJuegoEscondidas{
+// Clase base de personaje
+class Personaje {
+    var nombre: String
+    var lugar_actual: UbicacionFisica?
+
+    init(nombre: String) {
+        self.nombre = nombre
+    }
+}
+
+// Enum de roles dentro del juego
+enum RolesJuegoEscondidas {
     case contando
     case buscando_jugadores
     case buscando_escondite
@@ -6,305 +17,83 @@ enum RolesJuegoEscondidas{
     case regresando_a_base
     case encontrado
     case cantar_victoria
-    case suspendido /// Es el caso en que el juego vuelve a su estado original de inicio.
+    case suspendido
 }
 
-protocol JugadorDeEscondidas: class{
+// Protocolo que define un jugador de escondidas
+protocol JugadorDeEscondidas {
     var rol: RolesJuegoEscondidas { get set }
-    var compañeros_de_juego: [JugadorDeEscondidas] { get set }
-    var nombre: String { get set }
-    var lugar_actual: UbicacionFisica? { get set }
-    var visibilidad: Double { get set }
-    
     func actualizar() -> Bool
-    func establecer_rol(_ rol_nuevo: RolesJuegoEscondidas) -> Bool
-    func agregar_compañero(_ compañero_nuevo: JugadorDeEscondidas) -> Bool
 }
 
-extension JugadorDeEscondidas {
-    func establecer_rol(_ rol_nuevo: RolesJuegoEscondidas) -> Bool {
-        switch(self.rol){
-            case .suspendido: 
-                self.rol = rol_nuevo
-                return true
-            case .cantar_victoria, .encontrado: 
-                if rol_nuevo == .suspendido {
-                    self.rol = rol_nuevo
-                    return true
-                }
-                return false
-            default: 
-                return false
-        }
-    }
-}
-
-struct Ubicacion2Dimensiones{
-    var x: Int
-    var y: Int 
-    
-    init(_ x: Int, _ y: Int){
-        self.x = x
-        self.y = y
-    }
-}
-
-class UbicacionFisica{
-    var nombre: String
-    var lugares_cercanos: [UbicacionFisica]
-    
-    init(_ nombre: String){
-        self.nombre = nombre
-        self.lugares_cercanos = []
-    }
-    
-    func agregar_lugar(_ lugar: UbicacionFisica) -> Bool{
-        for ubicación in lugares_cercanos{
-            if ubicacion.nombre == lugar.nombre{
-                return false
-            }
-        }
-        
-        lugar.lugares_cercanos.append(self)
-        self.lugares_cercanos.append(lugar)
-        
-        return true
-    }
-}
-
-class Personaje {
-    var nombre: String
-    var ubicacion: UbicacionFisica?
-    
-    init(_ nombre: String){
-        self.nombre = nombre
-        self.ubicacion = nil
-    }
-    
-    func establecer_ubicacion(_ nueva_ubicacion: UbicacionFisica) -> Bool{
-        if ubicacion == nil{
-            self.ubicacion = nueva_ubicacion
-            return true
-        }
-        
-        if ubicacion!.nombre == nueva_ubicacion.nombre{
-            return false
-        }
-        
-        ubicacion = nueva_ubicacion
-        return true
-    }
-}
-
-class PersonajeJugable: Personaje, JugadorDeEscondidas{
-    var visibilidad: Double
+// Clase que implementa un personaje jugable
+class PersonajeJugable: Personaje, JugadorDeEscondidas {
     var rol: RolesJuegoEscondidas = .suspendido
-    var lugar_actual: UbicacionFisica?
-    var numero_contado: Int
-    var compañeros_de_juego: [JugadorDeEscondidas] = []
-    
-    init(_ nombre: String, visibilidad: Double){
-        self.visibilidad = visibilidad
-        numero_contado = 0
-        super.init(nombre)
-        lugar_actual = nil
-    }
-    
-    func actualizar() -> Bool{
-        switch(rol){
-            case .contando:
-                self.contar_para_buscar()
-            case .buscando_jugadores:
-                self.identificar_jugadores()
-                self.moverse_de_lugar()
-            case .buscando_escondite:
-                self.moverse_de_lugar()
-                
-                let quedarse_quieto = Int.random(in: 0...10)
-                if quedarse_quieto % 5 == 0{
-                    self.rol = .escondido
-                }
-                
+    var compañeros_de_juego: [PersonajeJugable] = []
+    var visibilidad: Double = 0.5
+
+    func actualizar() -> Bool {
+        switch(rol) {
             case .escondido:
-                /// Si está escondido en el Ropero_para_Narnia, tiene mayor probabilidad de no ser encontrado
-                if let lugar = lugar_actual, lugar.nombre == "Ropero_para_Narnia" {
+                /// Si está escondido en el Ropero_para_Narnia, no sale del closet por su papa
+                if let lugar = lugar_actual, lugar.nombre == "Ropero_para_Narnia" { // narnia
                     let probabilidad_moverse = Int.random(in: 0...20)
-                    if probabilidad_moverse == 0 { // Muy baja probabilidad de moverse desde Narnia
+                    if probabilidad_moverse == 0 { // Muy baja probabilidad de moverse desde Narnia // narnia
                         self.moverse_de_lugar()
                     }
                 }
-                
-            case .cantar_victoria, .suspendido:
-                print("\(nombre) está en estado \(rol)")
             default:
-                print("Estado no manejado: \(rol)")
+                break
         }
         return true
     }
-    
-    func identificar_jugadores(){
-        for compañero in compañeros_de_juego{
-            if compañero.lugar_actual!.nombre == self.lugar_actual!.nombre{
+
+    func moverse_de_lugar() {
+        print("\(nombre) se movió de lugar")
+    }
+
+    func identificar_jugadores() {
+        for compañero in compañeros_de_juego {
+            if compañero.lugar_actual!.nombre == self.lugar_actual!.nombre {
                 var probabilidad_omitir = Int(compañero.visibilidad * 100)
-                
-                /// Si el compañero está en el Ropero_para_Narnia, es más difícil de encontrar
-                if compañero.lugar_actual?.nombre == "Ropero_para_Narnia" {
-                    probabilidad_omitir += 30 // Aumenta la dificultad para encontrar
+
+                /// Si el compañero está en el Ropero_para_Narnia, que ya salga del closet
+                if compañero.lugar_actual?.nombre == "Ropero_para_Narnia" { // narnia
+                    probabilidad_omitir += 30 // Aumenta la dificultad para encontrar // narnia
                 }
-                
+
                 let suerte = Int.random(in: 0...100)
-                
-                if suerte > probabilidad_omitir{
+
+                if suerte > probabilidad_omitir {
                     compañero.rol = .encontrado
                     print("¡\(nombre) encontró a \(compañero.nombre) en \(lugar_actual?.nombre ?? "algún lugar")!")
                 }
             }
         }
     }
-    
-    func moverse_de_lugar(){
-        guard let lugarActual = lugar_actual, !lugarActual.lugares_cercanos.isEmpty else {
-            return
-        }
-        
-        let indice_de_nuevo_lugar = Int.random(in: 0..<lugarActual.lugares_cercanos.count)
-        let nuevo_lugar = lugarActual.lugares_cercanos[indice_de_nuevo_lugar]
-        
-        let deberia_de_cambiar = Int.random(in: 0...10)
-        
-        if deberia_de_cambiar % 2 == 0 {
-            cambiar_de_lugar_a(nuevo_lugar)
-            print("\(nombre) se movió a \(nuevo_lugar.nombre)")
-        }
+}
+
+// Clase de ubicaciones físicas
+class UbicacionFisica {
+    var nombre: String
+    var conexiones: [UbicacionFisica] = []
+
+    init(_ nombre: String) {
+        self.nombre = nombre
     }
-    
-    func contar_para_buscar(){
-        numero_contado += 1
-        print("Soy \(nombre) y voy en el \(numero_contado)")
-        
-        if numero_contado > 10{
-            self.rol = .buscando_jugadores
-            print("¡\(nombre) terminó de contar y ahora busca!")
-        }
-    }
-    
-    func cambiar_de_lugar_a(_ ubicacion: UbicacionFisica) -> Bool{
-        if self.lugar_actual == nil {
-            self.lugar_actual = ubicacion
-            return true 
-        } 
-        
-        if ubicacion.nombre == self.lugar_actual!.nombre{
-            return false
-        }
-        
-        lugar_actual = ubicacion
-        return true
-    }
-    
-    func agregar_compañero(_ compañero_nuevo: JugadorDeEscondidas) -> Bool{
-        if compañero_nuevo.nombre == self.nombre{
-            return false
-        }
-        
-        for compañero in compañeros_de_juego{
-            if compañero.nombre == compañero_nuevo.nombre{
-                return false
-            }
-        }
-        
-        compañeros_de_juego.append(compañero_nuevo)
-        return true
+
+    func agregar_lugar(_ lugar: UbicacionFisica) {
+        conexiones.append(lugar)
     }
 }
 
-func iniciar_juego(jugadores: [JugadorDeEscondidas]) {
-    let numero_del_jugador_que_busca = Int.random(in: 0..<jugadores.count)
-    var jugador_que_busca: JugadorDeEscondidas = jugadores[numero_del_jugador_que_busca]
-    
-    jugador_que_busca.establecer_rol(.contando)
-    print("\(jugador_que_busca.nombre) será el que busca")
-    
-    for jugador in jugadores {
-        if jugador.nombre != jugador_que_busca.nombre {
-            jugador_que_busca.agregar_compañero(jugador)
-            
-            if jugador.rol == .suspendido{
-                jugador.establecer_rol(.buscando_escondite)
-            }
-        }
-    }
-}
-
-// Crear ubicaciones del juego
-let loby = UbicacionFisica("Loby")
-let oficina = UbicacionFisica("Oficina")
-let sala_de_estar = UbicacionFisica("Sala de estar")
+// CREACIÓN DE LUGARES
+let sala_de_estar = UbicacionFisica("Sala_de_estar")
 let salon = UbicacionFisica("Salon")
-let baños = UbicacionFisica("Baños")
 
-/// NUEVO LUGAR AGREGADO: Ropero_para_Narnia aquí nadie me encontrara
-let ropero_narnia = UbicacionFisica("Ropero_para_Narnia")
+///  Ropero_para_Narnia aquí nadie me encontrara
+let ropero_narnia = UbicacionFisica("Ropero_para_Narnia") // narnia
 
-// Configurar conexiones entre lugares
-loby.agregar_lugar(sala_de_estar)
-loby.agregar_lugar(salon)
-loby.agregar_lugar(oficina)
-sala_de_estar.agregar_lugar(baños)
-salon.agregar_lugar(baños)
-
-/// CONEXIONES NUEVAS: El ropero de Narnia está conectado a la sala de estar y al salón
-sala_de_estar.agregar_lugar(ropero_narnia)
-salon.agregar_lugar(ropero_narnia)
-
-// Crear jugadores
-var jugadores: [PersonajeJugable] = []
-jugadores.append(PersonajeJugable("Pepito Bananas", visibilidad: 0.5))
-jugadores.append(PersonajeJugable("Wally", visibilidad: 0.1))
-jugadores.append(PersonajeJugable("Chuchito", visibilidad: 0.2))
-jugadores.append(PersonajeJugable("Anabelle", visibilidad: 0.9))
-
-// Iniciar el juego
-iniciar_juego(jugadores: jugadores)
-
-// Colocar a todos los jugadores en el loby inicialmente
-for jugador in jugadores {
-    jugador.cambiar_de_lugar_a(loby)
-}
-
-/// Juego principal
-var ciclo_actual = 0
-let max_ciclos = 50
-
-print("\n=== INICIO DEL JUEGO DE ESCONDIDAS ===\n")
-
-while ciclo_actual < max_ciclos {
-    print("\n--- Ciclo \(ciclo_actual + 1) ---")
-    
-    for jugador in jugadores {
-        jugador.actualizar()
-    }
-    
-    // Mostrar estado actual
-    for jugador in jugadores {
-        let ubicacion = jugador.lugar_actual?.nombre ?? "No se"
-        print("\(jugador.nombre): \(jugador.rol) en \(ubicacion)")
-    }
-    
-    // Verificar si el juego terminó (todos encontrados o suspendidos)
-    let jugadores_activos = jugadores.filter { 
-        $0.rol != .encontrado && $0.rol != .suspendido && $0.rol != .cantar_victoria 
-    }
-    
-    if jugadores_activos.count <= 1 {
-        print("\n=== JUEGO TERMINADO ===")
-        break
-    }
-    
-    ciclo_actual += 1
-}
-
-print("\n=== ESTADO FINAL ===")
-for jugador in jugadores {
-    print("\(jugador.nombre): \(jugador.rol)")
-}
+/// El ropero de Narnia está conectado a la sala de estar y al salón
+sala_de_estar.agregar_lugar(ropero_narnia) // narnia
+salon.agregar_lugar(ropero_narnia) // narnia
